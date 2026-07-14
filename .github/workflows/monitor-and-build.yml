@@ -52,6 +52,7 @@ jobs:
         id: sources
         env:
           FORCE_REQUESTED: ${{ github.event_name == 'push' || github.event_name == 'repository_dispatch' || (github.event_name == 'workflow_dispatch' && inputs.force_build) }}
+          PRIVATE_SOURCE_TOKEN: ${{ secrets.PRIVATE_SOURCE_TOKEN }}
         run: scripts/resolve-sources.sh
 
       - uses: actions/upload-artifact@v4
@@ -96,6 +97,7 @@ jobs:
           repository: iptvorganization/TV
           ref: ${{ needs.resolve.outputs.tv_sha }}
           path: sources/TV
+          token: ${{ secrets.PRIVATE_SOURCE_TOKEN }}
           persist-credentials: false
 
       - name: Checkout media
@@ -104,6 +106,7 @@ jobs:
           repository: iptvorganization/media
           ref: ${{ needs.resolve.outputs.media_sha }}
           path: sources/FongMi-media
+          token: ${{ secrets.PRIVATE_SOURCE_TOKEN }}
           persist-credentials: false
 
       - name: Checkout VividLib
